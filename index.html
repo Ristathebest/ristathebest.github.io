@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marko Ristic — IT Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0f14;
+      --surface:  #13161e;
+      --border:   #1e2230;
+      --accent:   #00e5a0;
+      --accent2:  #3b82f6;
+      --text:     #e8eaf0;
+      --muted:    #6b7280;
+      --tag-bg:   #1a2035;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2.5rem;
+      background: rgba(13,15,20,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 6rem 2.5rem 4rem;
+      max-width: 1100px; margin: 0 auto;
+      position: relative;
+    }
+    .hero-content { max-width: 720px; }
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before { content: '> '; }
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: #0d0f14; }
+    .btn-primary:hover { background: #00ffb3; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* terminal blinking cursor */
+    .cursor {
+      display: inline-block; width: 3px; height: 1em;
+      background: var(--accent); margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .stat-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .skill-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .skill-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .project-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .project-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      background: var(--tag-bg);
+      color: var(--accent2);
+      font-size: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid #1e3a5f;
+    }
+    .project-links { display: flex; gap: 1rem; margin-top: 1.1rem; }
+    .project-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .project-links a:hover { border-bottom-color: var(--accent); }
+
+    /* ── EDUCATION ── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .edu-card .degree { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .edu-card .school { color: var(--accent); font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .edu-card .year { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+    }
+    .contact-box p { color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+    }
+
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 3.5rem 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hero { padding: 5rem 1.25rem 3rem; }
+      .contact-box { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">MR.dev</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">Full-Stack Developer</p>
+    <h1>Hi, I'm <span>Marko</span><br>Ristic<span class="cursor"></span></h1>
+    <p class="hero-sub">
+      Full-stack developer majoring in Application Development at VIT Sydney. I build and ship web and mobile apps from scratch, and I'm passionate about cybersecurity and network security. I have full working rights in Australia and I'm open to junior developer, network administration and IT support roles.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">// about me</p>
+  <h2>Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm majoring in Application Development in the Bachelor of Information Technology at VIT Sydney, with a strong interest in cybersecurity and network security.</p>
+      <p>I build full-stack projects end to end, from database design and REST APIs through to a deployed, working product. I've built a booking platform with automated confirmation emails, a personalized news reader, and a mobile app for secure offline data storage, handling the frontend, backend and deployment myself on each one.</p>
+      <p>Most recently I led a team of four on an internship project for a client, building a membership and payments system with card payments, email receipts, QR check-in and an admin dashboard. I'm looking to start my career in software development, network administration or technical support, and I have full working rights in Australia.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-value">IT</div>
+        <div class="stat-label">Bachelor's Degree, VIT Sydney</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Full-stack projects designed &amp; built</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">AU</div>
+        <div class="stat-label">Full working rights in Australia</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">SYD</div>
+        <div class="stat-label">Based in Granville, NSW</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">// technical skills</p>
+  <h2>What I Work With</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <h3>Frontend</h3>
+      <p>React, Next.js, React Native (Expo), Tailwind CSS, and shadcn/ui — building responsive web UIs and cross-platform mobile apps.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">⚙️</div>
+      <h3>Backend</h3>
+      <p>Node.js/Express, Next.js API routes and Python (FastAPI, Flask) — REST API design, JWT authentication, scheduled jobs and business logic.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <h3>Databases</h3>
+      <p>PostgreSQL and SQL — relational schema design and hosted databases (Supabase with Auth, Storage and Row Level Security, Neon).</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🚀</div>
+      <h3>Deployment &amp; Integrations</h3>
+      <p>Vercel, Render and EAS for shipping web, backend and mobile builds, plus Square payments and Resend email.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🔐</div>
+      <h3>Auth &amp; Data Security</h3>
+      <p>JWT, bcrypt, role-based access control, Row Level Security, and client-side encryption (crypto-js) for protecting user data.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🛡️</div>
+      <h3>Cybersecurity</h3>
+      <p>AES/RSA encryption, VeraCrypt, SHA256 hashing, vulnerability analysis with OpenVAS, and network monitoring with Snort IDS.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🖥️</div>
+      <h3>Systems &amp; Networking</h3>
+      <p>Windows Server 2022, VirtualBox, Wireshark, Linux, and TCP/IP &amp; DNS fundamentals.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤝</div>
+      <h3>Teamwork &amp; Delivery</h3>
+      <p>Led a team of four on a client internship project, planning the work, sharing tasks and delivering a working system.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">// projects</p>
+  <h2>Things I've Built</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-number">01</div>
+      <h3>Membership &amp; Payments Platform</h3>
+      <p>Internship project for a client, built by a team of four that I led. Online registration with Square card payments checked on the server, emailed receipts with QR codes, QR check-in, attendance reports, and an admin dashboard with staff and admin roles. It also includes a vaccination certificate checker that runs as a scheduled background job.</p>
+      <div class="tags">
+        <span class="tag">Next.js</span>
+        <span class="tag">React</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Square</span>
+        <span class="tag">Resend</span>
+        <span class="tag">Vercel</span>
+      </div>
+      <div class="project-links">
+        <a href="https://esdtc-app.vercel.app" target="_blank" rel="noopener">Live demo →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">02</div>
+      <h3>Barbershop Booking Scheduler</h3>
+      <p>Full booking system for a barbershop — client-facing booking flow with live slot availability, an admin dashboard for managing services, staff, and hours, JWT-protected admin auth, and automated confirmation + reminder emails.</p>
+      <div class="tags">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">JWT</span>
+        <span class="tag">Resend</span>
+      </div>
+      <div class="project-links">
+        <a href="https://barbershop-scheduler-orpin.vercel.app/" target="_blank" rel="noopener">Live demo →</a>
+        <a href="https://github.com/Ristathebest/barbershop-scheduler" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">03</div>
+      <h3>The Signal — Personalized News</h3>
+      <p>A news reader with a feed tailored to your interests — technology, business, sports, science, health, entertainment, and more. Browse headlines, save articles, and switch between light/dark mode.</p>
+      <div class="tags">
+        <span class="tag">React 19</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">shadcn/ui</span>
+        <span class="tag">FastAPI</span>
+      </div>
+      <div class="project-links">
+        <a href="https://web-app-news.vercel.app/" target="_blank" rel="noopener">Live demo →</a>
+        <a href="https://github.com/Ristathebest/web-app-news" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">04</div>
+      <h3>Vault</h3>
+      <p>A mobile app for securely storing sensitive personal information — passwords, card details, PINs, IDs, documents, and photos — entirely offline, encrypted and stored locally, unlocked via PIN or biometrics.</p>
+      <div class="tags">
+        <span class="tag">React Native</span>
+        <span class="tag">Expo Router</span>
+        <span class="tag">TypeScript</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Ristathebest/Vault" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="section-label">// education</p>
+  <h2>Qualifications</h2>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="degree">Bachelor of Information Technology (Application Development)</div>
+      <div class="school">Victorian Institute of Technology (VIT), Sydney</div>
+      <div class="year">Expected: February 2027 · Subjects include Software Engineering, Web Development, Cryptography, Network &amp; Information Security, System Analysis &amp; Design</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">// contact</p>
+  <h2>Get In Touch</h2>
+  <div class="contact-box">
+    <p>"I'm open to opportunities in software development, network administration, or technical support. If you think I'd be a good fit for your team, feel free to reach out."</p>
+    <div class="contact-links">
+      <a href="mailto:ristaa95pn@gmail.com" class="contact-link">
+        📧 ristaa95pn@gmail.com
+      </a>
+      <a href="tel:0402947780" class="contact-link">
+        📱 0402 947 780
+      </a>
+      <a href="https://github.com/Ristathebest" class="contact-link" target="_blank" rel="noopener">
+        💻 GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>// built by Marko Ristic · Granville, NSW · 2026</p>
+</footer>
+
+</body>
+</html>
